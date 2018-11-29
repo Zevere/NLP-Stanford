@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace StanfordNLP
 {
     class NLP
@@ -20,9 +17,9 @@ namespace StanfordNLP
         string[][] wordToMatrix;
         public NLP()
         {
-            wordSplitQuestioAnswer = SplitQuestioAnswer(ReadTestData());
+            wordSplitQuestioAnswer = SplitQuestionAnswer(ReadTestData());
             wordToMatrix = WordToMatrix(KeyWords(wordSplitQuestioAnswer));
-            wordVocabulary = Vocabulary(KeyWords(SplitQuestioAnswer(ReadTestData())));
+            wordVocabulary = Vocabulary(KeyWords(SplitQuestionAnswer(ReadTestData())));
             ModelWordMatix = WordToNumberMatrix(wordToMatrix, wordVocabulary);
 
         }
@@ -32,11 +29,11 @@ namespace StanfordNLP
         public string[] ReadTestData()
         {
             string path = Directory.GetCurrentDirectory();
-            string[] lines = System.IO.File.ReadAllLines(path + "\\training.txt");
+            string[] lines = File.ReadAllLines(path + "\\training.txt");
             return lines;
         }
 
-        public string[][] SplitQuestioAnswer(string[] readTestData)
+        public string[][] SplitQuestionAnswer(string[] readTestData)
         {
 
             string[] data = readTestData;
@@ -134,12 +131,8 @@ namespace StanfordNLP
                             wordToNumberMatrixArray[i][ii] = iii;
                         }
                     }
-
-
-
                 }
             }
-
             return wordToNumberMatrixArray;
         }
 

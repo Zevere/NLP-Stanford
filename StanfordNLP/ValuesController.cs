@@ -1,17 +1,11 @@
 ﻿using edu.stanford.nlp.pipeline;
 using java.io;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.IO;
 using java.util;
 using Console = System.Console;
 using System.Text.RegularExpressions;
-using Microsoft.Owin.Hosting;
-using System.Net.Http;
 
 namespace StanfordNLP
 {
@@ -21,8 +15,8 @@ namespace StanfordNLP
         public object Get()
         {
             //  return new string[] { "value1", "value2" };
-          //  var apidata = new List<string>();
-           var apidata = StanfordNLP("");
+            //  var apidata = new List<string>();
+            var apidata = StanfordNLP("");
             return apidata;
         }
 
@@ -51,7 +45,7 @@ namespace StanfordNLP
 
         private object StanfordNLP(string input)
         {
-            string npath = System.IO.Directory.GetCurrentDirectory();
+            string npath = Directory.GetCurrentDirectory();
 
             string NLPquery = "";
             string getNoun = "";
@@ -59,27 +53,7 @@ namespace StanfordNLP
             var text = input;
             // Annotation pipeline configuration
             var props = new Properties();
-            //props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
-            //props.setProperty("pos.model", @"C:\StanfordNLP\edu\stanford\nlp\models\pos-tagger\english-bidirectional\english-bidirectional-distsim.tagger");
-            //props.setProperty("ner.model",  @"C:\StanfordNLP\edu\stanford\nlp\models\ner\english.all.3class.distsim.crf.ser.gz");
-            //props.setProperty("parse.model", @"C:\StanfordNLP\edu\stanford\nlp\models\lexparser\englishPCFG.ser.gz");
-            //props.setProperty("dcoref.demonym", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\demonyms.txt");
-            //props.setProperty("dcoref.states", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\state-abbreviations.txt");
-            //props.setProperty("dcoref.animate", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\animate.unigrams.txt");
-            //props.setProperty("dcoref.inanimate", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\inanimate.unigrams.txt");
-            //props.setProperty("dcoref.male", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\male.unigrams.txt");
-            //props.setProperty("dcoref.neutral", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\neutral.unigrams.txt");
-            //props.setProperty("dcoref.female", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\female.unigrams.txt");
-            //props.setProperty("dcoref.plural", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\plural.unigrams.txt");
-            //props.setProperty("dcoref.singular", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\singular.unigrams.txt");
-            //props.setProperty("dcoref.countries", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\countries");
-            //props.setProperty("dcoref.extra.gender", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\namegender.combine.txt");
-            //props.setProperty("dcoref.states.provinces", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\statesandprovinces");
-            //props.setProperty("dcoref.singleton.predictor", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\singleton.predictor.ser");
-            //props.setProperty("dcoref.big.gender.number", @"C:\StanfordNLP\edu\stanford\nlp\models\dcoref\gender.map.ser.gz");
-            //props.setProperty("sutime.rules", @"C:\StanfordNLP\edu\stanford\nlp\models\sutime\defs.sutime.txt, C:\StanfordNLP\edu\stanford\nlp\models\sutime\english.holidays.sutime.txt, C:\StanfordNLP\edu\stanford\nlp\models\sutime\english.sutime.txt");
-            //props.setProperty("sutime.binders", "0");
-            //props.setProperty("ner.useSUTime", "0");
+
             props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
             props.setProperty("pos.model", npath + @"\edu\stanford\nlp\models\pos-tagger\english-bidirectional\english-bidirectional-distsim.tagger");
             props.setProperty("ner.model", npath + @"\edu\stanford\nlp\models\ner\english.all.3class.distsim.crf.ser.gz");
@@ -107,19 +81,15 @@ namespace StanfordNLP
             var annotation = new Annotation(text);
             pipeline.annotate(annotation);
 
-
             List<string> NLPDATA = new List<string>();
-
 
             using (var stream = new ByteArrayOutputStream())
             {
-
                 //  pipeline.prettyPrint(annotation, new PrintWriter(stream));
                 pipeline.conllPrint(annotation, new PrintWriter(stream));
 
                 string output = stream.toString();
                 Console.WriteLine(output);
-
 
                 string[] lines = Regex.Split(output, "[\r\n]+");
                 // Console.WriteLine(lines.Length);
@@ -133,52 +103,35 @@ namespace StanfordNLP
                     {
                         wordMatrix[i][ii] = words[ii];
                     }
-
                 }
-
-               
-
+                
                 for (int i = 0; i < lines.Length; i++)
                 {
                     for (int ii = 0; ii < wordMatrix[i].Length; ii++)
                     {
-                        // Console.WriteLine(wordMatrix[i][ii]);
-                      //  if (wordMatrix[i][ii] == "VB" || wordMatrix[i][ii] == "NN" || wordMatrix[i][ii] == "NNP" || wordMatrix[i][ii] == "NNS" || wordMatrix[i][ii] == "CD"
-                            if (wordMatrix[i][ii] == "VB" || wordMatrix[i][ii] == "RP" || wordMatrix[i][ii] == "NN" || wordMatrix[i][ii] == "NNP")
-
-                            {
-                                NLPDATA.Add(wordMatrix[i][ii ] + " " + wordMatrix[i][ii - 1] + " " + wordMatrix[i][6]);
-                            NLPquery = NLPquery + " " +wordMatrix[i][ii - 1] ;
-
-
-                                    
+                        if (wordMatrix[i][ii] == "VB" || wordMatrix[i][ii] == "RP" || wordMatrix[i][ii] == "NN" || wordMatrix[i][ii] == "NNP")
+                        {
+                            NLPDATA.Add(wordMatrix[i][ii] + " " + wordMatrix[i][ii - 1] + " " + wordMatrix[i][6]);
+                            NLPquery = NLPquery + " " + wordMatrix[i][ii - 1];
                         }
-                            //if (i == lines.Length - 1)
-                        //{
-                            if (wordMatrix[i][ii] == "NN" || wordMatrix[i][ii] == "NNP" || wordMatrix[i][ii] == "NNS")
+                        if (wordMatrix[i][ii] == "NN" || wordMatrix[i][ii] == "NNP" || wordMatrix[i][ii] == "NNS")
+                        {
+                            if (wordMatrix[i][6] == "compound" || wordMatrix[i][6] == "xcomp")
                             {
-                            
-                            if (wordMatrix[i][6] == "compound" || wordMatrix[i][6] == "xcomp") {
                                 getNoun = wordMatrix[i][ii - 1];
                                 compound = true;
-
                             }
                             if (wordMatrix[i][6] == "dep" && compound != true && wordMatrix[i][ii] == "NN")
                             {
                                 getNoun = wordMatrix[i][ii - 1];
                             }
-                            if (wordMatrix[i][6] == "dobj" && compound != true && wordMatrix[i][ii] == "NN") {
+                            if (wordMatrix[i][6] == "dobj" && compound != true && wordMatrix[i][ii] == "NN")
+                            {
                                 getNoun = wordMatrix[i][ii - 1];
                             }
-                            
                         }
-                        //}
-
                     }
-
                 }
-
-
                 stream.close();
             }
             //Intent, Name, 
