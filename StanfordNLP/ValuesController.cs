@@ -16,8 +16,7 @@ namespace StanfordNLP
         {
             //  return new string[] { "value1", "value2" };
             //  var apidata = new List<string>();
-            var apidata = StanfordNLP("");
-            return apidata;
+            return new { Foo= 100 };
         }
 
         // GET api/values/5 

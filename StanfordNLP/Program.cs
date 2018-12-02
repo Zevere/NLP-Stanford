@@ -9,10 +9,10 @@ namespace StanfordNLP
         static void Main(string[] args)
         {
             var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-            string baseAddress = $"http://0.0.0.0:{port}/";
+            string baseAddress = $"http://*:{port}/";
 
             // Start OWIN host 
-            using (WebApp.Start<Startup>(url: baseAddress))
+            using (WebApp.Start<Startup>(baseAddress))
             {
                 Console.WriteLine($"Running server at: {baseAddress}");
                 Console.WriteLine("Press any key to terminate.");
