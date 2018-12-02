@@ -1,5 +1,6 @@
 ﻿using Console = System.Console;
 using Microsoft.Owin.Hosting;
+using System;
 
 namespace StanfordNLP
 {
@@ -7,7 +8,8 @@ namespace StanfordNLP
     {
         static void Main(string[] args)
         {
-            string baseAddress = "http://localhost:9000/";
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+            string baseAddress = $"http://0.0.0.0:{port}/";
 
             // Start OWIN host 
             using (WebApp.Start<Startup>(url: baseAddress))
