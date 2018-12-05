@@ -1,6 +1,7 @@
 ﻿using Console = System.Console;
 using Microsoft.Owin.Hosting;
 using System;
+using System.Threading;
 
 namespace StanfordNLP
 {
@@ -15,8 +16,7 @@ namespace StanfordNLP
             using (WebApp.Start<Startup>(baseAddress))
             {
                 Console.WriteLine($"Running server at: {baseAddress}");
-                Console.WriteLine("Press any key to terminate.");
-                Console.ReadLine();
+                Thread.Sleep(Timeout.Infinite);
             }
         }
     }
