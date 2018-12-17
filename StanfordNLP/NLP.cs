@@ -25,7 +25,10 @@ namespace StanfordNLP
         }
 
 
-
+        /// <summary>
+        /// Reads the test data from training.txt and returns them as a String Array.
+        /// </summary>
+        /// <returns>An array of strings containing the lines from the training.txt file.</returns>
         public string[] ReadTestData()
         {
             string path = Directory.GetCurrentDirectory();
@@ -33,6 +36,11 @@ namespace StanfordNLP
             return lines;
         }
 
+        /// <summary>
+        /// Splits the test data into a multidimensional array of questions and answers.
+        /// </summary>
+        /// <param name="readTestData">A string array containing the lines of the test data.</param>
+        /// <returns></returns>
         public string[][] SplitQuestionAnswer(string[] readTestData)
         {
 
@@ -52,6 +60,11 @@ namespace StanfordNLP
             return qusAns;
         }
 
+        /// <summary>
+        /// Removes stop words(nonKeyWords) from the supplied lines.
+        /// </summary>
+        /// <param name="splitQuestioAnswer">Multidimensional Array of Strings containing Questions & Answers.</param>
+        /// <returns>Multidimensional Array of String comtaining Questions & Answers without stop words.</returns>
         public string[][] KeyWords(string[][] splitQuestioAnswer)
         {
             string[][] qusAns = splitQuestioAnswer;
@@ -67,6 +80,11 @@ namespace StanfordNLP
             return qusAns;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyWords"></param>
+        /// <returns></returns>
         public string[] Vocabulary(string[][] keyWords)
         {
             string vocabularyline = "";
@@ -96,6 +114,11 @@ namespace StanfordNLP
             return vocabulary;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyWords"></param>
+        /// <returns></returns>
         public string[][] WordToMatrix(string[][] keyWords)
         {
             string[][] wordToMatrixArray = new string[keyWords.Length][];
@@ -112,7 +135,12 @@ namespace StanfordNLP
             return wordToMatrixArray;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wordToMatrix"></param>
+        /// <param name="vocabulary"></param>
+        /// <returns></returns>
         public int[][] WordToNumberMatrix(string[][] wordToMatrix, string[] vocabulary)
         {
             int[][] wordToNumberMatrixArray = new int[wordToMatrix.Length][];
@@ -136,6 +164,11 @@ namespace StanfordNLP
             return wordToNumberMatrixArray;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
         public double[] NNProcess(int[] question)
         {
             getProb = "";
@@ -180,6 +213,11 @@ namespace StanfordNLP
             return ansCode;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
         public int[] QuestionToArray(string question)
         {
 
@@ -201,6 +239,11 @@ namespace StanfordNLP
             return questionToVocabNumber;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
         public string getAnswer(string question)
         {
             string ans = "";
@@ -212,6 +255,11 @@ namespace StanfordNLP
             return ans.Trim();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
         public string getProbability(string question)
         {
             double[] resultNN = NNProcess(QuestionToArray(question));
